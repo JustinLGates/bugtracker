@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid">
-    <div class="row sticky-top">
+  <div class="container-fluid p-5">
+    <div class="row fixed-top">
       <div class="col-12 p-0 m-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <router-link class="navbar-brand" :to="{ name: 'Home' }">

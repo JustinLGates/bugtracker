@@ -1,18 +1,33 @@
 <template>
   <div class="container-fluid bg-dark vh100 p-absolute">
-    <div class="row">
+    <div class="row bg-secondary fixed-top">
       <div
         class="col-12 col-md-8 col-lg-6 m-auto d-flex justify-content-center align-items-center vh-100"
       >
-        <div class="d-flex flex-column bg-secondary bug-report-card p-2 rounded shadow w-100">
-          <form @submit="createNewBugReport">
-            <div>
-              <h3 class="text-warning p-1">Bug Report</h3>
+        <div class="d-flex flex-column bug-report-card p-0 m-0rounded shadow w-100 bg-dark">
+          <form @submit="createNewBugReport" class="bg-dark rounded p-0">
+            <div class="bg-warning p-2 rounded d-flex justify-content-between">
+              <h2 class="text-dark p-2 m-0">Bug Report</h2>
+              <h2 class="p-2 text-dark">
+                <i class="fas fa-times"></i>
+              </h2>
             </div>
-            <div class="p-1 m-1">
+
+            <div class="row d-flex justify-content-end">
+              <div class="col-lg-5 col-md-7 col-10">
+                <h4 class="text-right text-secondary pr-2">
+                  <small>Reported by</small>
+                  <br />Justin gates
+                </h4>
+                <hr class="p-0 m-1 bg-warning" />
+              </div>
+            </div>
+            <div class="m-3 p-2">
+              <h4 class="text-warning p-1" for>Title:</h4>
               <input v-model="bugFormData.title" class="w-100" type="text" placeholder="Title..." />
             </div>
-            <div>
+            <div class="mt-3 p-2 mx-3 text-warning p-1">
+              <h4 class="p-1">Descripiton:</h4>
               <textarea
                 v-model="bugFormData.description"
                 class="w-100"
@@ -22,9 +37,9 @@
                 placeholder="description of the bug..."
               ></textarea>
             </div>
-            <div class="d-flex justify-content-around">
-              <button class="btn btn-success text-light">Submit</button>
-              <button class="btn btn-dark text-light">Cancel</button>
+            <div class="d-flex justify-content-around p-2">
+              <button class="btn btn-outline-success">Submit</button>
+              <button class="btn btn-outline-danger">Cancel</button>
             </div>
           </form>
         </div>
