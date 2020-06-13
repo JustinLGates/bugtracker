@@ -12,19 +12,38 @@ let baseUrl = location.host.includes("localhost")
 let api = Axios.create({
   baseURL: baseUrl + "api",
   timeout: 3000,
-  withCredentials: true
+  withCredentials: true,
 });
 
 export default new Vuex.Store({
   state: {
-    profile: {}
+    profile: {},
+    isShowingBugForm: false,
   },
   mutations: {
+    isShowingBugForm(state, value) {
+      state.isShowingBugForm = !state.isShowingBugForm;
+      console.log(state.isShowingBugForm);
+    },
     setProfile(state, profile) {
       state.profile = profile;
-    }
+    },
   },
   actions: {
+    //#region bug report
+    async createNewBugReport({ commit, dispatch }, data) {
+      try {
+        let res = await api.post("bugs", data);
+        console.log(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    //#endregion
+
+    toggleBugForm({ commit, dispatch }) {
+      commit("isShowingBugForm");
+    },
     setBearer({}, bearer) {
       api.defaults.headers.authorization = bearer;
     },
@@ -32,12 +51,16 @@ export default new Vuex.Store({
       api.defaults.headers.authorization = "";
     },
     async getProfile({ commit }) {
+      console.log("getting profile");
+
       try {
         let res = await api.get("profile");
+        console.log(res.data);
+
         commit("setProfile", res.data);
       } catch (error) {
         console.error(error);
       }
-    }
-  }
+    },
+  },
 });

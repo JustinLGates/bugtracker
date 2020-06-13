@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navbar />
-    <BugReport v-if="false" />
+    <BugReport v-if="isShowingBugForm" />
     <router-view />
   </div>
 </template>
@@ -22,6 +22,11 @@ export default {
   components: {
     BugReport,
     Navbar
+  },
+  computed: {
+    isShowingBugForm() {
+      return this.$store.state.isShowingBugForm;
+    }
   }
 };
 </script>

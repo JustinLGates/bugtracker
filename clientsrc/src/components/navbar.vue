@@ -33,7 +33,7 @@
               </li>
             </ul>
             <span>
-              <button class="btn btn-dark text-light mr-3">Report Bug</button>
+              <button @click="toggleBugForm" class="btn btn-dark text-light mr-3">Report Bug</button>
             </span>
             <span class="navbar-text">
               <button
@@ -56,6 +56,9 @@ import { getUserData } from "@bcwdev/auth0-vue";
 export default {
   name: "Navbar",
   methods: {
+    toggleBugForm() {
+      this.$store.dispatch("toggleBugForm");
+    },
     async login() {
       await this.$auth.loginWithPopup();
       this.$store.dispatch("setBearer", this.$auth.bearer);
