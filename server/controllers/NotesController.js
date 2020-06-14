@@ -2,21 +2,20 @@ import express from "express";
 import BaseController from "../utils/BaseController";
 import auth0Provider from "@bcwdev/auth0provider";
 import { profilesService } from "../services/ProfilesService";
-import { bugsService } from "../services/BugsService";
+import { notesService } from "../services/NotesService";
 
-export class BugsController extends BaseController {
+export class NotesController extends BaseController {
   constructor() {
-    super("api/bugs");
+    super("api/notes");
     this.router
       .use(auth0Provider.getAuthorizedUserInfo)
       .get("", this.find)
       .post("", this.create)
-      .put("/:id", this.edit)
-      .delete("/:id", this.archive);
+      .delete("/:id", this.delete);
   }
-  async archive(req, res, next) {
+  async delete(req, res, next) {
     try {
-      let data = await bugsService.archive(req.params.id);
+      let data = await notesService.delete(req.params.id);
       res.send(data);
     } catch (error) {
       next(error);
@@ -24,7 +23,7 @@ export class BugsController extends BaseController {
   }
   async create(req, res, next) {
     try {
-      let data = await bugsService.create(req.body);
+      let data = await notesService.create(req.body);
       res.send(data);
     } catch (error) {
       next(error);
@@ -32,16 +31,8 @@ export class BugsController extends BaseController {
   }
   async find(req, res, next) {
     try {
-      let data = await bugsService.find(req.body);
+      let data = await notesService.find(req.body);
       res.send(data);
-    } catch (error) {
-      next(error);
-    }
-  }
-  async edit(req, res, next) {
-    try {
-      req.body.creatorId = req.user.sub;
-      res.send(req.body);
     } catch (error) {
       next(error);
     }

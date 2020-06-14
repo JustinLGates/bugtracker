@@ -23,10 +23,10 @@ export default new Vuex.Store({
   mutations: {
     isShowingBugForm(state, value) {
       state.isShowingBugForm = !state.isShowingBugForm;
-      console.log(state.isShowingBugForm);
     },
     setProfile(state, profile) {
       state.profile = profile;
+      console.log("profile set to " + state.profile);
     },
   },
   actions: {
@@ -39,11 +39,11 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-    //#endregion
-
     toggleBugForm({ commit, dispatch }) {
       commit("isShowingBugForm");
     },
+    //#endregion
+
     setBearer({}, bearer) {
       api.defaults.headers.authorization = bearer;
     },
@@ -51,14 +51,12 @@ export default new Vuex.Store({
       api.defaults.headers.authorization = "";
     },
     async getProfile({ commit }) {
-      console.log("getting profile");
-
       try {
         let res = await api.get("profile");
-        console.log(res.data);
 
         commit("setProfile", res.data);
       } catch (error) {
+        console.log("error getting profile");
         console.error(error);
       }
     },
