@@ -1,10 +1,22 @@
 <template>
   <div class="container-fluid">
-    <div class="row p-lg-4 pt-3">
+    <div class="row p-1 p-lg-4 pt-3">
       <div class="col-12 d-flex justify-content-between bg-light p-0 rounded-top">
-        <div class="p-2 m-2">
-          <p>Title:</p>
-          <h2 class="text-dark">{{this.bugDetails.title}}</h2>
+        <div class="p-1 pt-3 m-2">
+          <p class="text-dark p-0 m-0">Title:</p>
+          <h2 class="text-dark p-0 m-0">{{this.bugDetails.title}}</h2>
+        </div>
+      </div>
+      <div class="col-12 p-0 p-absolute m-0 p-0 d-flex justify-content-end glass">
+        <div v-if="!this.bugDetails.status" class="p-3 mr-2">
+          <h5 class="d-inline p-0">Status:</h5>
+          <h5 class="text-success d-inline pl-2">Open</h5>
+          <hr class="bg-dark shadow m-0" />
+        </div>
+        <div v-else class="p-3 m-0 p-0">
+          <h5 class="d-inline p-0">Status:</h5>
+          <h5 class="text-danger d-inline pl-2">Closed</h5>
+          <hr class="bg-dark shadow m-0" />
         </div>
       </div>
       <div class="col-12 text-light rounded-tr bg-dark">
@@ -17,19 +29,6 @@
               class="d-inline bg-dark p-2 rounded-tr rounded-br text-light shadow"
             >{{this.bugDetails.creatorEmail}}</p>
             <p />
-          </div>
-
-          <div v-if="!this.bugDetails.status" class="p-3 mr-2 bg-dark">
-            <h5 class="d-inline p-0">Status:</h5>
-            <h5 class="text-success d-inline pl-2">Open</h5>
-            <hr class="bg-secondary shadow m-0" />
-            <small>{{this.bugDetails.createdAt}}</small>
-          </div>
-          <div v-else class="p-3 mr-2 bg-dark">
-            <h5 class="d-inline p-0">Status:</h5>
-            <h5 class="text-danger d-inline pl-2">Closed</h5>
-            <hr class="bg-secondary shadow m-0" />
-            <small>{{this.bugDetails.updatedAt}}</small>
           </div>
         </div>
       </div>
@@ -70,21 +69,24 @@
             </h6>
           </div>
         </div>
-        <Note />
-        <div
-          class="row action bg-dark text-light text-center d-flex justify-content-center mx-1 p-0 p-3"
-        >
-          <div class="col-10 p-0 m-0 d-flex-center">
-            <input
-              type="text"
-              class="w-100 m-2 p-1"
-              placeholder="Add note of what you know about the issue...."
-            />
+        <Note v-for="(note, index) in notes" :key="index" :note="note" />
+        <form @submit.prevent="addNote">
+          <div
+            class="row action bg-dark text-light text-center d-flex justify-content-center mx-1 p-0 p-3"
+          >
+            <div class="col-10 p-0 m-0 d-flex-center">
+              <input
+                v-model="newNoteForm.description"
+                type="text"
+                class="w-100 m-2 p-1"
+                placeholder="Add note of what you know about the issue...."
+              />
+            </div>
+            <div class="col-2 p-0 m-0 d-flex-center">
+              <button type="submit" class="btn btn-success text-light">Add</button>
+            </div>
           </div>
-          <div class="col-2 p-0 m-0 d-flex-center">
-            <button @click="addComment" class="btn btn-success text-light">Add</button>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </div>
@@ -96,8 +98,18 @@ export default {
   mounted() {
     let id = this.$route.params.id;
     this.$store.dispatch("getBugDetails", id);
+    this.$store.dispatch("getNotesByBugId", id);
+  },
+
+  data() {
+    return {
+      newNoteForm: {}
+    };
   },
   computed: {
+    notes() {
+      return this.$store.state.notes;
+    },
     bugDetails() {
       return this.$store.state.bugDetails;
     }
@@ -110,13 +122,27 @@ export default {
       let id = this.$route.params.id;
       this.$store.dispatch("closeBug", id);
     },
-    addComment() {},
+    addNote() {
+      let id = this.bugDetails.id;
+      let data = {
+        bugId: id,
+        description: this.newNoteForm.description,
+        creatorEmail: this.$auth.user.email
+      };
+      this.$store.dispatch("addNote", data);
+    },
     deleteComment() {}
   }
 };
 </script>
 
 <style>
+.glass {
+  background: rgba(255, 255, 255, 0);
+}
+.p-absolute {
+  position: absolute;
+}
 .rounded-tr {
   border-top-right-radius: 8px;
 }

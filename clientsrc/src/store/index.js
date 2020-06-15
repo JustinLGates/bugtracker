@@ -21,6 +21,7 @@ export default new Vuex.Store({
     isShowingBugForm: false,
     showClosedBugs: true,
     bugs: [],
+    notes: [],
     bugDetails: {},
   },
   mutations: {
@@ -40,6 +41,9 @@ export default new Vuex.Store({
       state.profile = profile;
       console.log("profile set to " + state.profile);
     },
+    setNotes(state, value) {
+      state.notes = value;
+    },
   },
   actions: {
     //#region bug report
@@ -55,8 +59,7 @@ export default new Vuex.Store({
     },
     async createNewBugReport({ commit, dispatch }, data) {
       try {
-        let res = await api.post("bugs", data);
-        console.log(res.data);
+        await api.post("bugs", data);
       } catch (error) {
         console.error(error);
       }
@@ -84,7 +87,30 @@ export default new Vuex.Store({
       commit("setShowClosedBugs", value);
     },
     //#endregion
+    //#region
+    async addNote({ commit, dispatch }, data) {
+      console.log("adding note");
+      console.log(JSON.stringify(data));
 
+      try {
+        let res = await api.post(`bugs/${data.bugId}/notes`, data);
+        console.log(res.data);
+        commit("notes", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getNotesByBugId({ commit, dispatch }, id) {
+      try {
+        let res = await api.get(`bugs/${id}/notes`);
+        commit("setNotes", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    //#endregion
+
+    //#region auth
     setBearer({}, bearer) {
       api.defaults.headers.authorization = bearer;
     },
@@ -101,5 +127,6 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    //#endregion
   },
 });

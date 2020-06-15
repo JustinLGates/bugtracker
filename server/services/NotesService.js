@@ -9,11 +9,11 @@ class NotesService {
     }
     return data;
   }
-  async create(body) {
-    return await dbContext.Notes.create(body, { new: true });
+  async create(data) {
+    return await dbContext.Notes.create(data, { new: true });
   }
-  async find(query = {}) {
-    let data = await dbContext.Notes.find(query).populate(
+  async findByBugId(query = {}) {
+    let data = await dbContext.Notes.find({ _id: query.bugId }).populate(
       "creator",
       "name picture"
     );
