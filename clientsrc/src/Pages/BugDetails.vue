@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="row p-1 p-lg-4 pt-3">
+    <div class="row p-1 pt-3">
       <div class="col-12 d-flex justify-content-between bg-light p-0 rounded-top">
         <div class="p-1 pt-3 m-2">
           <p class="text-dark p-0 m-0">Title:</p>
@@ -60,7 +60,7 @@
 
           <div class="col-7 d-flex-center p-0">
             <h6 class="d-inline p-1 m-0">
-              <b>Details</b>
+              <b>Note</b>
             </h6>
           </div>
           <div class="col-2 text-center p-0">
@@ -125,8 +125,8 @@ export default {
     addNote() {
       let id = this.bugDetails.id;
       let data = {
-        bugId: id,
         description: this.newNoteForm.description,
+        bugId: id,
         creatorEmail: this.$auth.user.email
       };
       this.$store.dispatch("addNote", data);

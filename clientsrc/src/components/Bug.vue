@@ -2,7 +2,7 @@
   <div v-if="this.hideClosed(bug.status)">
     <div
       @click="routeToBugDetails(bug.id)"
-      class="row action bg-dark text-light text-center d-flex justify-content-center mx-1"
+      class="row action bg-dark text-light text-center d-flex justify-content-center"
     >
       <div class="col-6 p-0">
         <p class="p-1 m-0 br">{{bug.title}}</p>
@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-3 p-0 m-0 d-flex-center bl">
-        <p class="m-0">{{bug.updatedAt}}</p>
+        <p class="m-0">{{this.bugDate}}</p>
       </div>
       <div class="col-12 p-0">
         <hr class="bg-warning m-0 w-100" />
@@ -29,6 +29,12 @@
 
 <script>
 export default {
+  mounted() {
+    this.formatDate();
+  },
+  data() {
+    return { bugDate: "" };
+  },
   props: ["bug"],
   computed: {
     showClosedBugs() {
@@ -39,7 +45,24 @@ export default {
     routeToBugDetails() {
       this.$router.push({ path: `/bugDetails/${this.bug.id}` });
     },
-
+    formatDate() {
+      let rawDate = this.bug.createdAt;
+      let year = "";
+      let month = "";
+      let day = "";
+      // yyyy,-,mm,-,dd
+      // mm,dd,yy
+      for (let i = 0; i < 10; i++) {
+        if (i < 2) {
+          year += rawDate[i];
+        } else if (i > 4 && i < 7) {
+          month += rawDate[i];
+        } else if (i > 7) {
+          day += rawDate[i];
+        }
+      }
+      this.bugDate = month + "/" + day + "/" + year;
+    },
     hideClosed(status) {
       if (!this.showClosedBugs) {
         return true;

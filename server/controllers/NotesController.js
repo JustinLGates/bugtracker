@@ -9,7 +9,7 @@ export class NotesController extends BaseController {
     super("api/notes");
     this.router
       .use(auth0Provider.getAuthorizedUserInfo)
-      .get("", this.find)
+      // .get("", this.find)
       .post("", this.create)
       .delete("/:id", this.delete);
   }
@@ -29,12 +29,12 @@ export class NotesController extends BaseController {
       next(error);
     }
   }
-  async find(req, res, next) {
-    try {
-      let data = await notesService.find(req.body);
-      res.send(data);
-    } catch (error) {
-      next(error);
-    }
-  }
+  // async find(req, res, next) {
+  //   try {
+  //     let data = await notesService.find(req.body);
+  //     res.send(data);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // }
 }

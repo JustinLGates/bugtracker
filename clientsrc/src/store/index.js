@@ -19,12 +19,17 @@ export default new Vuex.Store({
   state: {
     profile: {},
     isShowingBugForm: false,
-    showClosedBugs: true,
+    showClosedBugs: false,
     bugs: [],
     notes: [],
     bugDetails: {},
   },
   mutations: {
+    sortBugsByDate(state, data) {
+      state.bugs = state.bugs.sort((a, b) => a - b);
+      console.log(state.bugs);
+    },
+    sortBugsByStatus(state, data) {},
     setBugDetails(state, data) {
       state.bugDetails = data;
     },
@@ -47,6 +52,9 @@ export default new Vuex.Store({
   },
   actions: {
     //#region bug report
+    sortBugsByDate({ commit, dispatch }) {
+      commit("sortBugsByDate");
+    },
     async getAllBugs({ commit, dispatch }) {
       try {
         let res = await api.get("bugs");
@@ -87,15 +95,19 @@ export default new Vuex.Store({
       commit("setShowClosedBugs", value);
     },
     //#endregion
-    //#region
-    async addNote({ commit, dispatch }, data) {
-      console.log("adding note");
-      console.log(JSON.stringify(data));
-
+    //#region notes
+    async deleteNote({ commit, dispatch }, data) {
       try {
-        let res = await api.post(`bugs/${data.bugId}/notes`, data);
-        console.log(res.data);
-        commit("notes", res.data);
+        await api.delete(`notes/${data.noteId}`);
+        dispatch("getNotesByBugId", data.bugId);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async addNote({ commit, dispatch }, rawData) {
+      try {
+        await api.post(`bugs/${rawData.bugId}/notes`, rawData);
+        dispatch("getNotesByBugId", rawData.bugId);
       } catch (error) {
         console.error(error);
       }

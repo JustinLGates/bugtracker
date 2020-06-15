@@ -1,8 +1,8 @@
 <template>
-  <div class="row p-lg-4 pt-3">
-    <div class="col-12 col-lg-11 m-auto text-dark bg-light rounded">
+  <div class="row p-1">
+    <div class="col-12 text-dark bg-light rounded p-4 py-1 m-0">
       <div class="row">
-        <div class="col-12 d-flex justify-content-between align-items-center p-1">
+        <div class="col-12 d-flex justify-content-between align-items-center p-0">
           <div class="py-2">
             <h2 class="text-dark p-2">Reported Bugs</h2>
           </div>
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="row bg-warning text-dark mx-1 rounded-top">
+      <div class="row bg-warning text-dark rounded-top">
         <div class="col-6 p-1">
           <h6 class="text-center p-1 m-0">
             <b>Title</b>
@@ -42,7 +42,7 @@
       </div>
       <Bug v-for="(bug) in bugs" :key="bug.id" :bug="bug" />
       <!-- v-forbug in bugs :key="bug.id" -->
-      <div class="row rounded-bottom text-light bg-dark p-1 mx-1">
+      <div class="row rounded-bottom text-light bg-dark p-1">
         <div class="col-12 text-center p-0 m-0">
           <h6 class="p-1 m-0">
             <b>
@@ -75,7 +75,9 @@ export default {
       this.$store.dispatch("setShowClosedBugs", value);
     },
     sortByStatus() {},
-    sortBydate() {}
+    sortBydate() {
+      this.$store.dispatch("sortBugsByDate");
+    }
   },
   components: {
     bugReport,

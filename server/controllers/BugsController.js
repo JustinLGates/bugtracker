@@ -19,6 +19,8 @@ export class BugsController extends BaseController {
   }
   async createNote(req, res, next) {
     try {
+      req.body.bugId = req.params.id;
+      req.body.creatorEmail = req.userInfo.email;
       let data = await notesService.create(req.body);
       res.send(data);
     } catch (error) {
