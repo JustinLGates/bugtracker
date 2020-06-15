@@ -74,7 +74,9 @@ export default {
 
       this.$store.dispatch("setShowClosedBugs", value);
     },
-    sortByStatus() {},
+    sortByStatus() {
+      this.$store.dispatch("sortBugsByStatus");
+    },
     sortBydate() {
       this.$store.dispatch("sortBugsByDate");
     }

@@ -23,13 +23,39 @@ export default new Vuex.Store({
     bugs: [],
     notes: [],
     bugDetails: {},
+    sortByNewest: true,
+    sortByOpen: true,
   },
   mutations: {
     sortBugsByDate(state, data) {
-      state.bugs = state.bugs.sort((a, b) => a - b);
-      console.log(state.bugs);
+      let order = state.sortByNewest ? 1 : -1;
+      state.bugs = state.bugs.sort((a, b) => {
+        let dateA = a.createdAt;
+        let dateB = b.createdAt;
+        if (dateA < dateB) {
+          return order;
+        }
+        if (dateA > dateB) {
+          return -order;
+        }
+      });
+      state.sortByNewest = !state.sortByNewest;
     },
-    sortBugsByStatus(state, data) {},
+
+    sortBugsByStatus(state, data) {
+      let order = state.sortByOpen ? 1 : -1;
+      state.bugs = state.bugs.sort((a, b) => {
+        let statusA = a.status;
+        let statusB = b.status;
+        if (statusA > statusB) {
+          return order;
+        }
+        if (statusA < statusB) {
+          return -order;
+        }
+      });
+      state.sortByOpen = !state.sortByOpen;
+    },
     setBugDetails(state, data) {
       state.bugDetails = data;
     },
@@ -52,6 +78,9 @@ export default new Vuex.Store({
   },
   actions: {
     //#region bug report
+    sortBugsByStatus({ commit }) {
+      commit("sortBugsByStatus");
+    },
     sortBugsByDate({ commit, dispatch }) {
       commit("sortBugsByDate");
     },
