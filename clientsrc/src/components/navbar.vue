@@ -4,7 +4,7 @@
       <div class="col-12 p-0 m-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <router-link class="navbar-brand" :to="{ name: 'Home' }">
-            <h1 class="text-warning">
+            <h1 class="text-warning pl-2">
               <i class="fas fa-bug"></i> Tracker
             </h1>
           </router-link>

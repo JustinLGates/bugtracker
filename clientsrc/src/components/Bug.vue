@@ -1,55 +1,64 @@
 <template>
-  <div>
-    <div class="row action bg-dark text-light outline text-center">
-      <div class="col-4 p-1 outline">
-        <p class="m-0">login page not working</p>
+  <div v-if="this.hideClosed(bug.status)">
+    <div
+      @click="routeToBugDetails(bug.id)"
+      class="row action bg-dark text-light text-center d-flex justify-content-center mx-1"
+    >
+      <div class="col-6 p-0">
+        <p class="p-1 m-0 br">{{bug.title}}</p>
       </div>
-      <div class="col-4 p-1 outline">
-        <p class="m-0">Justin</p>
+      <div class="col-3 p-0 d-flex-center">
+        <div v-if="bug.status">
+          <i title="closed" class="fas fa-circle bug-closed p-1"></i>
+          <p class="d-inline p-1 m-0">Closed</p>
+        </div>
+        <div v-else>
+          <i title="open" class="fas fa-circle bug-open p-1"></i>
+          <p class="d-inline p-1 m-0">Open</p>
+        </div>
       </div>
-      <div class="col-2 p-1 outline d-flex-center">
-        <i title="closed" class="fas fa-circle bug-closed"></i>
+      <div class="col-3 p-0 m-0 d-flex-center bl">
+        <p class="m-0">{{bug.updatedAt}}</p>
       </div>
-      <div class="col-2 p-0 m-0 d-flex-center outline">
-        <p class="m-0">4/7/2020</p>
-      </div>
-    </div>
-    <div class="row action bg-dark text-light outline text-center">
-      <div class="col-4 p-1 outline">
-        <p class="m-0">route not working</p>
-      </div>
-      <div class="col-4 p-1 outline">
-        <p class="m-0">Tim</p>
-      </div>
-      <div class="col-2 p-1 outline d-flex-center">
-        <i title="open" class="fas fa-circle bug-open"></i>
-      </div>
-      <div class="col-2 p-0 m-0 outline d-flex-center">
-        <p class="m-0">4/3/2020</p>
-      </div>
-    </div>
-    <div class="row action bg-dark text-light outline text-center">
-      <div class="col-4 p-1 outline">
-        <p class="m-0">broken link in about page</p>
-      </div>
-      <div class="col-4 p-1 outline">
-        <p class="m-0">Mark</p>
-      </div>
-      <div class="col-2 p-1 outline d-flex-center">
-        <i title="closed" class="fas fa-circle bug-closed"></i>
-      </div>
-      <div class="col-2 p-0 m-0 d-flex-center outline">
-        <p class="m-0">2/29/2020</p>
+      <div class="col-12 p-0">
+        <hr class="bg-warning m-0 w-100" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["bug"],
+  computed: {
+    showClosedBugs() {
+      return this.$store.state.showClosedBugs;
+    }
+  },
+  methods: {
+    routeToBugDetails() {
+      this.$router.push({ path: `/bugDetails/${this.bug.id}` });
+    },
+
+    hideClosed(status) {
+      if (!this.showClosedBugs) {
+        return true;
+      } else if (!status) {
+        return true;
+      }
+      return false;
+    }
+  }
+};
 </script>
 
 <style>
+.br {
+  border-right: solid 1px chocolate;
+}
+.bl {
+  border-left: solid 1px chocolate;
+}
 .action {
   cursor: pointer;
 }

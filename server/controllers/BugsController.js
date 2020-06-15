@@ -10,9 +10,10 @@ export class BugsController extends BaseController {
     this.router
       .use(auth0Provider.getAuthorizedUserInfo)
       .get("", this.find)
+      .get("/:id", this.findById)
       .post("", this.create)
-      .put("/:id", this.edit)
-      .delete("/:id", this.archive);
+      .delete("/:id", this.archive)
+      .put("/:id", this.edit);
   }
   async archive(req, res, next) {
     try {
@@ -33,6 +34,14 @@ export class BugsController extends BaseController {
   async find(req, res, next) {
     try {
       let data = await bugsService.find(req.body);
+      res.send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async findById(req, res, next) {
+    try {
+      let data = await bugsService.findById(req.params.id);
       res.send(data);
     } catch (error) {
       next(error);

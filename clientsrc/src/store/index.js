@@ -19,10 +19,22 @@ export default new Vuex.Store({
   state: {
     profile: {},
     isShowingBugForm: false,
+    showClosedBugs: true,
+    bugs: [],
+    bugDetails: {},
   },
   mutations: {
+    setBugDetails(state, data) {
+      state.bugDetails = data;
+    },
+    setBugs(state, bugs) {
+      state.bugs = bugs;
+    },
     isShowingBugForm(state, value) {
       state.isShowingBugForm = !state.isShowingBugForm;
+    },
+    setShowClosedBugs(state, value) {
+      state.showClosedBugs = value;
     },
     setProfile(state, profile) {
       state.profile = profile;
@@ -31,6 +43,16 @@ export default new Vuex.Store({
   },
   actions: {
     //#region bug report
+    async getAllBugs({ commit, dispatch }) {
+      try {
+        let res = await api.get("bugs");
+        console.log(res.data);
+
+        commit("setBugs", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async createNewBugReport({ commit, dispatch }, data) {
       try {
         let res = await api.post("bugs", data);
@@ -39,8 +61,27 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async getBugDetails({ commit, dispatch }, id) {
+      try {
+        let res = await api.get(`bugs/${id}`);
+        commit("setBugDetails", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async closeBug({ commit, dispatch }, id) {
+      try {
+        let res = await api.delete(`bugs/${id}`);
+        dispatch("getBugDetails", id);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     toggleBugForm({ commit, dispatch }) {
       commit("isShowingBugForm");
+    },
+    setShowClosedBugs({ commit, dispatch }, value) {
+      commit("setShowClosedBugs", value);
     },
     //#endregion
 

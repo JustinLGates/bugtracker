@@ -2,8 +2,11 @@ import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
 
 class BugssService {
-  archive(id) {
-    throw new Error("Method not implemented.");
+  async archive(id) {
+    let update = { status: true };
+    return await dbContext.Bugs.findByIdAndUpdate({ _id: id }, update, {
+      new: true,
+    });
   }
   async create(body) {
     return await dbContext.Bugs.create(body, { new: true });
