@@ -32,7 +32,10 @@ export default {
         noteId: this.note.id,
         bugId: this.note.bugId
       };
-      this.$store.dispatch("deleteNote", data);
+      let deleteIt = window.confirm("are you sure ");
+      if (deleteIt) {
+        this.$store.dispatch("deleteNote", data);
+      }
     }
   }
 };

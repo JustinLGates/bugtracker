@@ -84,11 +84,16 @@ export default new Vuex.Store({
     sortBugsByDate({ commit, dispatch }) {
       commit("sortBugsByDate");
     },
+    async editBug({ commit, dispatch }, data) {
+      console.log(data.title);
+
+      await api.put(`bugs/${data.bugId}`, data);
+
+      dispatch("getBugDetails", data.bugId);
+    },
     async getAllBugs({ commit, dispatch }) {
       try {
         let res = await api.get("bugs");
-        console.log(res.data);
-
         commit("setBugs", res.data);
       } catch (error) {
         console.error(error);
@@ -96,7 +101,8 @@ export default new Vuex.Store({
     },
     async createNewBugReport({ commit, dispatch }, data) {
       try {
-        await api.post("bugs", data);
+        let res = await api.post("bugs", data);
+        console.log(res.data);
       } catch (error) {
         console.error(error);
       }
@@ -123,6 +129,7 @@ export default new Vuex.Store({
     setShowClosedBugs({ commit, dispatch }, value) {
       commit("setShowClosedBugs", value);
     },
+
     //#endregion
     //#region notes
     async deleteNote({ commit, dispatch }, data) {

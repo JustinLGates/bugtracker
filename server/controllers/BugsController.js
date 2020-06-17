@@ -69,7 +69,8 @@ export class BugsController extends BaseController {
   }
   async edit(req, res, next) {
     try {
-      req.body.creatorId = req.user.sub;
+      req.creatorEmail = req.user.userInfo;
+      let data = await bugsService.edit(req.params.id, req.body);
       res.send(req.body);
     } catch (error) {
       next(error);

@@ -2,6 +2,12 @@ import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
 
 class BugssService {
+  async edit(id, body) {
+    body.description;
+    body.title;
+
+    return await dbContext.Bugs.findByIdAndUpdate({ _id: id }, body, {});
+  }
   async archive(id) {
     let update = { status: true };
     return await dbContext.Bugs.findByIdAndUpdate({ _id: id }, update, {

@@ -41,6 +41,18 @@
           </h5>
 
           <p class="px-1 m-0">{{this.bugDetails.description}}</p>
+          <div v-if="this.profile.email == this.bugDetails.creatorEmail ">
+            <form @submit.prevent="editBug">
+              <textarea
+                placeholder="edit description here..."
+                v-model="editBugForm.description"
+                class="w-100"
+                type="text"
+              />
+              <input v-model="editBugForm.title" placeholder="edit title here...." />
+              <button type="submit" class="btn btn-light shadow mr-4 mt-2">Edit</button>
+            </form>
+          </div>
           <div class="d-flex justify-content-end p-o m-0">
             <button @click="closeBug" class="btn btn-danger shadow text-light mr-4 mt-2">Close</button>
           </div>
@@ -63,6 +75,7 @@
               <b>Note</b>
             </h6>
           </div>
+
           <div class="col-2 text-center p-0">
             <h6 class="d-inline p-1 m-0">
               <b>Delete</b>
@@ -103,6 +116,7 @@ export default {
 
   data() {
     return {
+      editBugForm: {},
       newNoteForm: {}
     };
   },
@@ -112,6 +126,9 @@ export default {
     },
     bugDetails() {
       return this.$store.state.bugDetails;
+    },
+    profile() {
+      return this.$store.state.profile;
     }
   },
   components: {
@@ -119,8 +136,11 @@ export default {
   },
   methods: {
     closeBug() {
-      let id = this.$route.params.id;
-      this.$store.dispatch("closeBug", id);
+      let deleteIt = window.confirm("are you sure ");
+      if (deleteIt) {
+        let id = this.$route.params.id;
+        this.$store.dispatch("closeBug", id);
+      }
     },
     addNote() {
       let id = this.bugDetails.id;
@@ -131,7 +151,17 @@ export default {
       };
       this.$store.dispatch("addNote", data);
     },
-    deleteComment() {}
+    editBug() {
+      let bugid = this.bugDetails.id;
+      let bugTitle = this.editBugForm.title;
+      let bugDescription = this.editBugForm.description;
+      let data = {
+        bugId: bugid,
+        description: bugDescription,
+        title: bugTitle
+      };
+      this.$store.dispatch("editBug", data);
+    }
   }
 };
 </script>
