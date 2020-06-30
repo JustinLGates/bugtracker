@@ -7,7 +7,7 @@
             <div class="bg-warning p-2 rounded-top d-flex justify-content-between">
               <h2 class="text-dark p-2 m-0">Bug Report</h2>
               <h2 class="p-2 text-dark">
-                <i class="fas fa-times"></i>
+                <i @click="closeReport" class="fas fa-times action"></i>
               </h2>
             </div>
             <div class="row d-flex justify-content-end">
@@ -36,7 +36,7 @@
             </div>
             <div class="d-flex justify-content-around p-3">
               <button class="btn btn-outline-success">Submit</button>
-              <button class="btn btn-outline-danger">Cancel</button>
+              <button @click="closeReport" class="btn btn-outline-danger">Cancel</button>
             </div>
           </form>
         </div>
@@ -65,6 +65,9 @@ export default {
         creatorEmail: this.$auth.user.email
       };
       this.$store.dispatch("createNewBugReport", data);
+    },
+    closeReport() {
+      this.$store.dispatch("toggleBugForm");
     }
   }
 };

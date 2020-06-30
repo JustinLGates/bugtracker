@@ -1,6 +1,6 @@
 <template>
   <div class="row p-1">
-    <div class="col-12 text-dark bg-light rounded p-4 py-1 m-0">
+    <div class="col-12 col-lg-10 col-md-11 text-dark bg-light rounded p-4 py-1 m-0 m-auto">
       <div class="row">
         <div class="col-12 d-flex justify-content-between align-items-center p-0">
           <div class="py-2">

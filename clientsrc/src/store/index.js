@@ -62,7 +62,7 @@ export default new Vuex.Store({
     setBugs(state, bugs) {
       state.bugs = bugs;
     },
-    isShowingBugForm(state, value) {
+    isShowingBugForm(state) {
       state.isShowingBugForm = !state.isShowingBugForm;
     },
     setShowClosedBugs(state, value) {
@@ -85,10 +85,7 @@ export default new Vuex.Store({
       commit("sortBugsByDate");
     },
     async editBug({ commit, dispatch }, data) {
-      console.log(data.title);
-
       await api.put(`bugs/${data.bugId}`, data);
-
       dispatch("getBugDetails", data.bugId);
     },
     async getAllBugs({ commit, dispatch }) {
@@ -101,8 +98,8 @@ export default new Vuex.Store({
     },
     async createNewBugReport({ commit, dispatch }, data) {
       try {
-        let res = await api.post("bugs", data);
-        console.log(res.data);
+        await api.post("bugs", data);
+        dispatch("toggleBugForm");
       } catch (error) {
         console.error(error);
       }
@@ -117,7 +114,8 @@ export default new Vuex.Store({
     },
     async closeBug({ commit, dispatch }, id) {
       try {
-        let res = await api.delete(`bugs/${id}`);
+        //archives bug dose not delete
+        await api.delete(`bugs/${id}`);
         dispatch("getBugDetails", id);
       } catch (error) {
         console.error(error);
@@ -168,10 +166,8 @@ export default new Vuex.Store({
     async getProfile({ commit }) {
       try {
         let res = await api.get("profile");
-
         commit("setProfile", res.data);
       } catch (error) {
-        console.log("error getting profile");
         console.error(error);
       }
     },

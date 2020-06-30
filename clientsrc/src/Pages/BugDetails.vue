@@ -33,7 +33,6 @@
         </div>
       </div>
 
-      <!--  -->
       <div class="col-12 text-light bg-dark p-1">
         <div class>
           <h5>
@@ -43,18 +42,31 @@
           <p class="px-1 m-0">{{this.bugDetails.description}}</p>
           <div v-if="this.profile.email == this.bugDetails.creatorEmail ">
             <form @submit.prevent="editBug">
+              <input
+                class="p-1 rounded"
+                v-model="editBugForm.title"
+                placeholder="edit title here...."
+              />
               <textarea
                 placeholder="edit description here..."
                 v-model="editBugForm.description"
-                class="w-100"
+                class="rounded p-1 mt-2 w-90 d-block"
                 type="text"
+                rows="5"
               />
-              <input v-model="editBugForm.title" placeholder="edit title here...." />
-              <button type="submit" class="btn btn-light shadow mr-4 mt-2">Edit</button>
+              <button
+                title="Save your changes"
+                type="submit"
+                class="btn btn-outline-success shadow mt-2"
+              >Save</button>
             </form>
           </div>
           <div class="d-flex justify-content-end p-o m-0">
-            <button @click="closeBug" class="btn btn-danger shadow text-light mr-4 mt-2">Close</button>
+            <button
+              @click="closeBug"
+              class="btn btn-danger shadow text-light mr-4 mt-2"
+              title="this action cannot be undone this closes the bug"
+            >Close</button>
           </div>
         </div>
       </div>
@@ -184,5 +196,8 @@ export default {
 }
 .rounded-br {
   border-bottom-right-radius: 8px;
+}
+.w-90 {
+  width: 90%;
 }
 </style>
