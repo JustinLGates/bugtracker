@@ -1,3 +1,3 @@
-export const domain = "dev-2ygzkfxt.us.auth0.com";
-export const audience = "https://dev-2ygzkfxt.us.auth0.com/api/v2/";
-export const clientId = "2kpj0uy4ZkF0nlWR1OCZ2AQ4JjT6UUkQ";
+export const domain = "dev-2dk7gg9u.us.auth0.com";
+export const audience = "https://bugtrackerapi";
+export const clientId = "YOzi5wMRR4VpQtKLJ1HTpo9EQDKsP7z1";
