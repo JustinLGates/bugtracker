@@ -9,13 +9,16 @@ import cleanupService from "./services/TestCleanupService";
 export default class Startup {
   static ConfigureGlobalMiddleware(app) {
     // NOTE Configure and Register Middleware
-    let whitelist = ["http://localhost:8080"];
+    let whitelist = [
+      "http://localhost:8080",
+      "https://track-a-bug.herokuapp.com/",
+    ];
     let corsOptions = {
-      origin: function(origin, callback) {
+      origin: function (origin, callback) {
         let originIsWhitelisted = whitelist.indexOf(origin) !== -1;
         callback(null, originIsWhitelisted);
       },
-      credentials: true
+      credentials: true,
     };
     app.use(helmet());
     app.use(cors(corsOptions));
@@ -25,7 +28,7 @@ export default class Startup {
     auth0Provider.configure({
       domain: process.env.AUTH_DOMAIN,
       clientId: process.env.AUTH_CLIENT_ID,
-      audience: process.env.AUTH_AUDIENCE
+      audience: process.env.AUTH_AUDIENCE,
     });
   }
   static ConfigureRoutes(app) {
