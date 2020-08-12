@@ -21,13 +21,13 @@ export default {
   },
   components: {
     BugReport,
-    Navbar
+    Navbar,
   },
   computed: {
     isShowingBugForm() {
       return this.$store.state.isShowingBugForm;
-    }
-  }
+    },
+  },
 };
 </script>
 
